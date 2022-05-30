@@ -21,16 +21,33 @@ const ImageDropzone = ({ cb }) => {
       reader.onload = async () => {
         // Log Base64 string
         const base64 = reader.result.split(",")[1];
+        const name = file.name.replace(/\s/g, "-");
         const data = {
           image: base64,
-          name: file.name,
+          name: name,
         };
         await uploadFile(data);
       };
       reader.readAsDataURL(file);
     }
   }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    acceptedFiles,
+    fileRejections,
+  } = useDropzone({
+    onDrop,
+    accept: {
+      "image/jpeg": [],
+      "image/png": [],
+      "image/gif": [],
+      "image/bmp": [],
+      "image/svg+xml": [],
+      "image/webp": [],
+    },
+  });
 
   return (
     <div className="col-12">
