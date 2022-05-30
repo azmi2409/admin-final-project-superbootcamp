@@ -10,7 +10,7 @@ export const defaultState = {
   isLoading: false,
 };
 
-export const userReducer = (state, action) => {
+export const userReducer = (state = defaultState, action) => {
   switch (action.type) {
     case LOGIN:
       const data = {

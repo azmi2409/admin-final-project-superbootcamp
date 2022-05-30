@@ -9,9 +9,9 @@ export const UserProvider = ({ children }) => {
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user.token) {
-      dispatchUser(login(JSON.parse(user)));
+    const user = JSON.parse(localStorage.getItem("user")) || {};
+    if (user.user && user.isAuthenticated) {
+      dispatchUser(login(user.user));
     }
   }, []);
 
@@ -19,17 +19,38 @@ export const UserProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const response = await loginRequest(user);
-      console.log(response);
-      dispatchUser(login(response));
+      if (response.status === 200) {
+        console.log(response);
+        dispatchUser(login(response.data));
+        return {
+          status: true,
+          message: "Login Successful",
+        };
+      } else {
+        return {
+          status: false,
+          message: "Login Failed",
+        };
+      }
     } catch (error) {
       console.log(error);
+      return {
+        status: false,
+        message: "Login Failed",
+      };
     } finally {
       setIsLoading(false);
     }
   };
 
+  const isLogin = user.isAuthenticated;
+
+  const token = user.user.token;
+
   return (
-    <UserContext.Provider value={{ user, dispatchUser, loginAction }}>
+    <UserContext.Provider
+      value={{ user, dispatchUser, loginAction, isLogin, token }}
+    >
       {children}
     </UserContext.Provider>
   );

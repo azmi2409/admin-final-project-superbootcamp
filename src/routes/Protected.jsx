@@ -1,7 +1,12 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 const Protected = () => {
+  const { isLogin } = React.useContext(UserContext);
+  if (!isLogin) {
+    return <Navigate to="/login" />;
+  }
   return <Outlet />;
 };
 

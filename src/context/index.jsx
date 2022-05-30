@@ -1,6 +1,4 @@
 import { UserContext, UserProvider } from "./UserContext";
+import { ProductContext, ProductProvider } from "./ProductContext";
 
-export default {
-  UserContext,
-  UserProvider,
-};
+export { UserContext, UserProvider, ProductContext, ProductProvider };

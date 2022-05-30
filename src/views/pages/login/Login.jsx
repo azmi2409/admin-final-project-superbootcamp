@@ -15,13 +15,19 @@ import {
 import CIcon from "@coreui/icons-react";
 import { cilLockLocked, cilUser } from "@coreui/icons";
 import { UserContext } from "../../../context/UserContext";
+import { Navigate } from "react-router-dom";
 
 const Login = () => {
-  const { user, dispatchUser, loginAction } = React.useContext(UserContext);
+  const { isLogin, loginAction } = React.useContext(UserContext);
   const [userForm, setUserForm] = React.useState({
     email: "",
     password: "",
   });
+
+  //Check if user not logged in
+  if (isLogin) {
+    return <Navigate to="/" />;
+  }
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -30,12 +36,15 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(userForm);
-    await loginAction(userForm);
-    setUserForm({
-      email: "",
-      password: "",
-    });
+    const res = await loginAction(userForm);
+    if (res.status) {
+      setUserForm({
+        email: "",
+        password: "",
+      });
+    } else {
+      alert(res.message);
+    }
   };
 
   return (
