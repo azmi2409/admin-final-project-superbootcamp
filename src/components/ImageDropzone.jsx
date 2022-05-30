@@ -1,30 +1,62 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
+import useUpload from "../lib/hooks/useUpload";
+import { CProgress, CProgressBar } from "@coreui/react";
 
-const ImageDropzone = () => {
+const ImageDropzone = ({ cb }) => {
+  const [status, progress, link, uploadFile] = useUpload();
+
+  React.useEffect(() => {
+    if (status === "done") {
+      cb(link);
+    }
+  }, [status]);
+
   const onDrop = React.useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file) => {
+    const file = acceptedFiles[0];
+    if (!!file) {
       const reader = new FileReader();
-
       reader.onabort = () => console.log("file reading was aborted");
       reader.onerror = () => console.log("file reading has failed");
-      reader.onload = () => {
-        // Do whatever you want with the file contents
-        const binaryStr = reader.result;
-        console.log(binaryStr);
+      reader.onload = async () => {
+        // Log Base64 string
+        const base64 = reader.result.split(",")[1];
+        const data = {
+          image: base64,
+          name: file.name,
+        };
+        await uploadFile(data);
       };
-      reader.readAsArrayBuffer(file);
-    });
+      reader.readAsDataURL(file);
+    }
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <div className="border p-5" {...getRootProps()}>
-      <input {...getInputProps()} />
-      {isDragActive ? (
-        <p>Drop the files here ...</p>
-      ) : (
-        <p>Drag 'n' drop some files here, or click to select files</p>
+    <div className="col-12">
+      {status !== "done" && status !== "uploading" && (
+        <div className="border p-5" {...getRootProps()}>
+          <input {...getInputProps()} />
+          {isDragActive ? (
+            <p>Drop the files here ...</p>
+          ) : (
+            <>
+              <p>Drag 'n' drop some files here, or click to select files</p>
+            </>
+          )}
+        </div>
+      )}
+      {status === "done" && (
+        <div className="border p-5">
+          <img src={link} alt="uploaded" className="img-thumbnail" />
+        </div>
+      )}
+      {status === "uploading" && (
+        <div className="border p-5">
+          <CProgress className="mb-3">
+            <CProgressBar value={progress} animated color="success" />
+          </CProgress>
+        </div>
       )}
     </div>
   );

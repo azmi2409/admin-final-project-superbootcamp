@@ -1,5 +1,6 @@
 import axios from "axios";
-const SERVER = "https://backend-final-beeleaf.herokuapp.com/api/v1/admin";
+export const SERVER =
+  "https://backend-final-beeleaf.herokuapp.com/api/v1/admin";
 
 const axiosConfig = (token) => {
   return {

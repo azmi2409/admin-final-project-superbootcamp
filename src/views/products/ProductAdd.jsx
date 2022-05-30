@@ -13,6 +13,7 @@ const ProductAdd = () => {
     price: 0,
     category: "",
     sku: "",
+    image_url: "",
   };
   const [form, setForm] = React.useState(initialForm);
 
@@ -29,12 +30,17 @@ const ProductAdd = () => {
       setForm(initialForm);
     }
   };
+
+  const setImage = (image) => {
+    setForm({ ...form, image_url: image });
+  };
+
   return (
     <>
       <CForm className="row g-3" onSubmit={handleSubmit}>
         <CCol className="d-flex justify-content-center" xs="12">
           <CCol xs="6">
-            <ImageDropzone />
+            <ImageDropzone cb={setImage} />
           </CCol>
         </CCol>
         <CCol md={6}>

@@ -62,7 +62,7 @@ const ProductList = () => {
               <CImage
                 rounded
                 thumbnail
-                src={product.productImages}
+                src={product.ProductImages[0]?.image_url}
                 width={100}
                 height={100}
               />
