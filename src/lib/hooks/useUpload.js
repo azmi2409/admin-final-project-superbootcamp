@@ -1,7 +1,6 @@
-import { useState, useContext, useEffect } from "react";
-import { SERVER } from "../server/server";
-import axios from "axios";
+import { useState, useContext } from "react";
 import { UserContext } from "../../context";
+import { uploadImage } from "../server/server";
 
 const progressPercentage = (progress) => {
   return Math.round((progress.loaded / progress.total) * 100);
@@ -16,17 +15,10 @@ const useUpload = () => {
   const uploadFile = async (file = {}) => {
     setStatus("uploading");
     setProgress(0);
-    const url = `${SERVER}/upload`;
-    const res = await axios.post(url, file, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      onUploadProgress: (progressEvent) => {
-        setProgress(progressPercentage(progressEvent));
-      },
+    const res = await uploadImage(token, file, (progress) => {
+      setProgress(progressPercentage(progress));
     });
-    const link = `https://cwrfdvnvvcedqjylgvms.supabase.co/storage/v1/object/public/${res.data.Key}`;
+    const link = res.data.Key;
     setlink(link);
     setProgress(100);
     setStatus("done");

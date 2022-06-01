@@ -23,7 +23,7 @@ const Content = () => {
               )
             );
           })}
-          <Route path="/" element={<Navigate to="products" replace />} />
+          <Route path="/" element={<Navigate to="dashboard" replace />} />
         </Routes>
       </Suspense>
     </CContainer>

@@ -10,6 +10,7 @@ import {
 } from "@coreui/react";
 import { getAllProducts } from "../../lib/server/server";
 import { useNavigate } from "react-router-dom";
+import { formatCurrencyToRP } from "../../utils/formatter";
 
 const ProductList = () => {
   const [products, setProducts] = React.useState([]);
@@ -62,14 +63,19 @@ const ProductList = () => {
               <CImage
                 rounded
                 thumbnail
-                src={product.ProductImages[0]?.image_url}
+                src={`https://cwrfdvnvvcedqjylgvms.supabase.co/storage/v1/object/public/${product.ProductImages[0]?.image_url}`}
                 width={100}
                 height={100}
               />
             </CTableDataCell>
             <CTableDataCell>{product.name}</CTableDataCell>
-            <CTableDataCell>{product.price}</CTableDataCell>
-            <CTableDataCell>{product.description}</CTableDataCell>
+            <CTableDataCell>{formatCurrencyToRP(product.price)}</CTableDataCell>
+            <CTableDataCell
+              style={{ maxWidth: "150px" }}
+              className="text-truncate"
+            >
+              {product.description}
+            </CTableDataCell>
             <CTableDataCell>{product.Category.name}</CTableDataCell>
           </CTableRow>
         ))}

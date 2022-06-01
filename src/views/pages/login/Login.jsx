@@ -18,14 +18,14 @@ import { UserContext } from "../../../context/UserContext";
 import { Navigate } from "react-router-dom";
 
 const Login = () => {
-  const { isLogin, loginAction } = React.useContext(UserContext);
+  const { token, loginAction } = React.useContext(UserContext);
   const [userForm, setUserForm] = React.useState({
     email: "",
     password: "",
   });
 
   //Check if user not logged in
-  if (isLogin) {
+  if (token) {
     return <Navigate to="/" />;
   }
 

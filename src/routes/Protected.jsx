@@ -3,8 +3,8 @@ import { Outlet, Navigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 const Protected = () => {
-  const { isLogin } = React.useContext(UserContext);
-  if (!isLogin) {
+  const { token } = React.useContext(UserContext);
+  if (!token) {
     return <Navigate to="/login" />;
   }
   return <Outlet />;

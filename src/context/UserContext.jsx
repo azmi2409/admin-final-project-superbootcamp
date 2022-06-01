@@ -1,18 +1,24 @@
 import React from "react";
-import { userReducer, login, defaultState } from "../lib/reducers";
+import { userReducer, login, logout, defaultState } from "../lib/reducers";
 import { loginRequest } from "../lib/server/server";
+import { showReducer, showState } from "../lib/reducers/showReducer";
 
 export const UserContext = React.createContext({});
 
 export const UserProvider = ({ children }) => {
   const [user, dispatchUser] = React.useReducer(userReducer, defaultState);
+  const [show, dispatchShow] = React.useReducer(showReducer, showState);
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
+    setIsLoading(true);
     const user = JSON.parse(localStorage.getItem("user")) || {};
-    if (user.user && user.isAuthenticated) {
-      dispatchUser(login(user.user));
+    if (user) {
+      dispatchUser(login(user));
     }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   }, []);
 
   const loginAction = async (user) => {
@@ -20,7 +26,7 @@ export const UserProvider = ({ children }) => {
     try {
       const response = await loginRequest(user);
       if (response.status === 200) {
-        console.log(response);
+        localStorage.setItem("user", JSON.stringify(response.data));
         dispatchUser(login(response.data));
         return {
           status: true,
@@ -43,13 +49,25 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const isLogin = user.isAuthenticated;
+  const logoutAction = () => {
+    localStorage.removeItem("user");
+    dispatchUser(logout);
+  };
 
-  const token = user.user.token;
+  const token = user.token;
 
   return (
     <UserContext.Provider
-      value={{ user, dispatchUser, loginAction, isLogin, token }}
+      value={{
+        user,
+        dispatchUser,
+        loginAction,
+        token,
+        show,
+        dispatchShow,
+        isLoading,
+        logoutAction,
+      }}
     >
       {children}
     </UserContext.Provider>

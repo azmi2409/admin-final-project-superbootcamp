@@ -13,20 +13,21 @@ import { SidebarNav } from "./SidebarNav";
 
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
-
+import { UserContext } from "../context/";
 // sidebar nav config
 import navigation from "../utils/_nav";
 
 const Sidebar = () => {
-  const [unfoldable, setUnfoldable] = React.useState(false);
-  const [sidebarShow = true, setSidebarShow] = React.useState(true);
+  const { show, dispatchShow } = React.useContext(UserContext);
 
   return (
     <CSidebar
       position="fixed"
-      unfoldable={unfoldable}
-      visible={sidebarShow}
-      onVisibleChange={(visible) => setSidebarShow(visible)}
+      unfoldable={show?.sidebarUnfoldable}
+      visible={show?.sidebarShow}
+      onVisibleChange={(visible) => {
+        dispatchShow({ type: "set", sidebarShow: visible });
+      }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
         <h2 className="sidebar-brand-full">Admin Panel</h2>
@@ -38,9 +39,12 @@ const Sidebar = () => {
       </CSidebarNav>
       <CSidebarToggler
         className="d-none d-lg-flex"
-        onClick={() => {
-          setUnfoldable(!unfoldable);
-        }}
+        onClick={() =>
+          dispatchShow({
+            type: "set",
+            sidebarUnfoldable: !show?.sidebarUnfoldable,
+          })
+        }
       />
     </CSidebar>
   );

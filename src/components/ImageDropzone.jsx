@@ -1,10 +1,13 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
 import useUpload from "../lib/hooks/useUpload";
-import { CProgress, CProgressBar } from "@coreui/react";
+import { CProgress, CProgressBar, CImage } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { cilX } from "@coreui/icons";
 
 const ImageDropzone = ({ cb }) => {
   const [status, progress, link, uploadFile] = useUpload();
+  const url = `https://cwrfdvnvvcedqjylgvms.supabase.co/storage/v1/object/public/${link}`;
 
   React.useEffect(() => {
     if (status === "done") {
@@ -58,20 +61,27 @@ const ImageDropzone = ({ cb }) => {
             <p>Drop the files here ...</p>
           ) : (
             <>
-              <p>Drag 'n' drop some files here, or click to select files</p>
+              <p>Drag Picture Here, or click to select</p>
             </>
           )}
         </div>
       )}
       {status === "done" && (
-        <div className="border p-5">
-          <img src={link} alt="uploaded" className="img-thumbnail" />
+        <div className="border p-5 d-flex justify-content-center">
+          <div className="position-relative">
+            <CImage rounded thumbnail src={url} width={200} height={200} />
+            <button className="position-absolute top-0 end-0 rounded-circle btn btn-outline-primary mt-1 mr-1 btn-sm d-flex justify-content-center align-items-middle p-2">
+              <CIcon icon={cilX} />
+            </button>
+          </div>
         </div>
       )}
       {status === "uploading" && (
         <div className="border p-5">
           <CProgress className="mb-3">
-            <CProgressBar value={progress} animated color="success" />
+            <CProgressBar value={progress} animated color="success">
+              {`${progress}%`}
+            </CProgressBar>
           </CProgress>
         </div>
       )}

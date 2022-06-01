@@ -11,7 +11,12 @@ const ProductPage = () => {
     getProductById(id).then((v) => setProduct(v.data));
   }, [id]);
 
-  return <div>{JSON.stringify(product)}</div>;
+  return (
+    <div className="col">
+      <h1>{product.name}</h1>
+      <p>{product.description}</p>
+    </div>
+  );
 };
 
 export default ProductPage;
