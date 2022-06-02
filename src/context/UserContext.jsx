@@ -67,9 +67,36 @@ export const UserProvider = ({ children }) => {
         dispatchShow,
         isLoading,
         logoutAction,
+        setIsLoading,
       }}
     >
       {children}
     </UserContext.Provider>
   );
 };
+
+export function useUserContext() {
+  const {
+    user,
+    dispatchUser,
+    loginAction,
+    token,
+    show,
+    dispatchShow,
+    isLoading,
+    logoutAction,
+    setIsLoading,
+  } = React.useContext(UserContext);
+
+  return {
+    user,
+    dispatchUser,
+    loginAction,
+    token,
+    show,
+    dispatchShow,
+    isLoading,
+    logoutAction,
+    setIsLoading,
+  };
+}

@@ -43,19 +43,14 @@ const ImageDropzone = ({ cb }) => {
   } = useDropzone({
     onDrop,
     accept: {
-      "image/jpeg": [],
-      "image/png": [],
-      "image/gif": [],
-      "image/bmp": [],
-      "image/svg+xml": [],
-      "image/webp": [],
+      "image/jpeg": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".webp"],
     },
   });
 
   return (
-    <div className="col-12">
+    <div className="border p-5 d-flex justify-content-center">
       {status !== "done" && status !== "uploading" && (
-        <div className="border p-5" {...getRootProps()}>
+        <div {...getRootProps()}>
           <input {...getInputProps()} />
           {isDragActive ? (
             <p>Drop the files here ...</p>
@@ -67,19 +62,27 @@ const ImageDropzone = ({ cb }) => {
         </div>
       )}
       {status === "done" && (
-        <div className="border p-5 d-flex justify-content-center">
-          <div className="position-relative">
-            <CImage rounded thumbnail src={url} width={200} height={200} />
-            <button className="position-absolute top-0 end-0 rounded-circle btn btn-outline-primary mt-1 mr-1 btn-sm d-flex justify-content-center align-items-middle p-2">
-              <CIcon icon={cilX} />
-            </button>
-          </div>
+        <div className="position-relative">
+          <CImage rounded thumbnail src={url} width={200} height={200} />
+          <button className="position-absolute top-0 end-0 rounded-circle btn btn-outline-primary mt-1 mr-1 btn-sm d-flex justify-content-center align-items-middle p-2">
+            <CIcon icon={cilX} />
+          </button>
         </div>
       )}
       {status === "uploading" && (
-        <div className="border p-5">
-          <CProgress className="mb-3">
-            <CProgressBar value={progress} animated color="success">
+        <div
+          style={{ width: "100%" }}
+          className="d-flex justify-content-center"
+        >
+          <CProgress value={progress} className="mb-3">
+            <CProgressBar
+              style={{ width: "250px" }}
+              value={100}
+              variant="striped"
+              animated
+              color="success"
+              className="text-black"
+            >
               {`${progress}%`}
             </CProgressBar>
           </CProgress>

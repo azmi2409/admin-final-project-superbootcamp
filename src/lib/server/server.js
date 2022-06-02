@@ -2,6 +2,19 @@ import axios from "axios";
 export const SERVER =
   "https://backend-final-beeleaf.herokuapp.com/api/v1/admin";
 
+axios.interceptors.response.use(
+  (response) => {
+    if (response.status == 401) {
+      localStorage.removeItem("user");
+      window.location.href = "/login";
+    }
+    return response;
+  },
+  (err) => {
+    return Promise.reject(err);
+  }
+);
+
 const axiosConfig = (token, cb = () => {}) => {
   return {
     headers: {

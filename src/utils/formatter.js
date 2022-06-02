@@ -11,3 +11,13 @@ export const formatTime = (value) => {
     minute: "numeric",
   }).format(value);
 };
+
+export const formatDate = (value) => {
+  const date = new Date(value);
+  //en-US
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(date);
+};

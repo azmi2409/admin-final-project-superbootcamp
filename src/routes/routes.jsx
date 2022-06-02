@@ -7,7 +7,7 @@ const Dashboard = React.lazy(() => import("../views/dashboard/Dashboard"));
 const Page404 = React.lazy(() => import("../views/pages/Page404"));
 
 const routes = [
-  { path: "/products", name: "Product List", element: ProductList },
+  { path: "/products/list", name: "Product List", element: ProductList },
   { path: "/products/:id", name: "Product Page", element: ProductPage },
   { path: "/products/add", name: "Add Product", element: ProductAdd },
   { path: "/dashboard", name: "Dashboard", element: Dashboard },

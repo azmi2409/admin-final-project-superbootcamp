@@ -1,9 +1,8 @@
 import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
 
 const Protected = () => {
-  const { token } = React.useContext(UserContext);
+  const { token } = JSON.parse(localStorage.getItem("user"));
   if (!token) {
     return <Navigate to="/login" />;
   }
