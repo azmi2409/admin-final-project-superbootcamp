@@ -79,13 +79,13 @@ const ProductList = () => {
               </CTableHead>
               <CTableBody>
                 {entries?.map((product) => (
-                  <CTableRow key={product.ID}>
+                  <CTableRow key={product.sku}>
                     <CTableDataCell>{product.sku}</CTableDataCell>
                     <CTableDataCell>
                       <CImage
                         rounded
                         thumbnail
-                        src={`https://cwrfdvnvvcedqjylgvms.supabase.co/storage/v1/object/public/${product.ProductImages[0]?.image_url}`}
+                        src={`https://cwrfdvnvvcedqjylgvms.supabase.co/storage/v1/object/public/${product.image_url[0]}`}
                         width={100}
                         height={100}
                       />
@@ -100,15 +100,15 @@ const ProductList = () => {
                     >
                       {product.description}
                     </CTableDataCell>
-                    <CTableDataCell>{product.Category.name}</CTableDataCell>
+                    <CTableDataCell>{product.category}</CTableDataCell>
                     <CTableDataCell>
-                      {formatDate(product.CreatedAt)}
+                      {formatDate(product.created_at)}
                     </CTableDataCell>
                     <CTableDataCell>
                       <div className="d-flex flex-column justify-content-center align-items-center gap-1">
                         <ActionButton
                           cb={() => {
-                            navigate(`/products/${product.ID}/`);
+                            navigate(`/products/${product.id}/`);
                           }}
                           color="info"
                           size="sm"
@@ -117,7 +117,7 @@ const ProductList = () => {
                         </ActionButton>
                         <ActionButton
                           cb={() => {
-                            navigate(`/products/${product.ID}/edit`);
+                            navigate(`/products/${product.id}/edit`);
                           }}
                           color="warning"
                           size="sm"
@@ -126,7 +126,7 @@ const ProductList = () => {
                         </ActionButton>
                         <ActionButton
                           cb={() => {
-                            navigate(`/products/${product.ID}/delete`);
+                            navigate(`/products/${product.id}/delete`);
                           }}
                           color="danger"
                           size="sm"

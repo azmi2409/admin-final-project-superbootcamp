@@ -5,7 +5,8 @@ export const formatCurrencyToRP = (value) => {
   }).format(value);
 };
 
-export const formatTime = (value) => {
+export const formatTime = (val) => {
+  const value = new Date(val);
   return new Intl.DateTimeFormat("pt-BR", {
     hour: "numeric",
     minute: "numeric",
