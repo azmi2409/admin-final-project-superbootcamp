@@ -40,7 +40,7 @@ const ProductPage = () => {
             <CRow>
               <CCol xs="12" sm="12" md="6" lg="6">
                 <CCardImage
-                  src={`https://cwrfdvnvvcedqjylgvms.supabase.co/storage/v1/object/public/${product?.ProductImages[0]?.image_url}`}
+                  src={`https://cwrfdvnvvcedqjylgvms.supabase.co/storage/v1/object/public/${product?.image_url[0]}`}
                   alt={product.name}
                   className="img-thumbnail"
                   style={{ maxHeight: "300px", width: "auto" }}
